@@ -2,28 +2,30 @@ import socket
 from _thread import *
 import sys
 from utils import *
+import pickle
+from player import Player
 
 def threaded_client(conn, player):
-    conn.send(str.encode(make_pos(pos[player])))
+    conn.send(pickle.dumps(players[player]))
     reply = ""
     while True:
         try:
-            data = read_pos(conn.recv(2048).decode())
-            pos[player] = data
+            data = pickle.loads(conn.recv(2048))
+            players[player] = data
 
             if not data:
                 print("Disconnected")
                 break
             else:
                 if player == 1:
-                    reply = pos[0]
+                    reply = players[0]
                 else:
-                    reply = pos[1]
+                    reply = players[1]
 
                 print("Received: ", data)
                 print("Sending : ", reply)
 
-            conn.sendall(str.encode(make_pos(reply)))
+            conn.sendall(pickle.dumps(reply))
         except:
             break
 
@@ -44,6 +46,7 @@ if __name__ == "__main__":
     print("Waiting for a connection, Server Started")
 
     pos = [(0,0),(100,100)]
+    players = [Player(0,0,50,50,(255,0,0)), Player(100,100, 50,50, (0,0,255))]
 
     currentPlayer = 0
     while True:
