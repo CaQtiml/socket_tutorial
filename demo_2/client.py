@@ -20,7 +20,10 @@ def redrawWindow(win, game, p, btns):
     else:
         font = pygame.font.SysFont("comicsans", 60)
 
-        text = font.render(str(math.floor(game.gameTime)), 1, (255, 0,0))
+        if p == 0: 
+            text = font.render(str(math.floor(game.p1GameTime)), 1, (255, 0,0))
+        else:
+            text = font.render(str(math.floor(game.p2GameTime)), 1, (255, 0,0))
         win.blit(text, (10, 10))
 
         text = font.render("Your Move", 1, (0, 255,255))
@@ -79,18 +82,15 @@ def main_game(btns):
             print("Couldn't get game")
             break
 
-        if game.bothWent():
-            redrawWindow(win, game, player, btns)
+        # print(game.eitherZero()) 
+        if game.bothWent() or (game.eitherZero()):
+            if game.eitherZero() == False:
+                redrawWindow(win, game, player, btns)
             pygame.time.delay(500)
-            try:
-                game = n.send("reset")
-            except:
-                run = False
-                print("Couldn't get game")
-                break
-
             font = pygame.font.SysFont("comicsans", 90)
-            if (game.winner() == 1 and player == 1) or (game.winner() == 0 and player == 0):
+            if game.eitherZero():
+                text = font.render("Someone not play", 1, (255,0,0))
+            elif (game.winner() == 1 and player == 1) or (game.winner() == 0 and player == 0):
                 text = font.render("You Won!", 1, (255,0,0))
             elif game.winner() == -1:
                 text = font.render("Tie Game!", 1, (255,0,0))
@@ -100,6 +100,12 @@ def main_game(btns):
             win.blit(text, (width/2 - text.get_width()/2, height/2 - text.get_height()/2))
             pygame.display.update()
             pygame.time.delay(2000)
+            try:
+                game = n.send("reset")
+            except:
+                run = False
+                print("Couldn't get game")
+                break
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

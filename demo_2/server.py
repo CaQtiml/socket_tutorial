@@ -24,7 +24,11 @@ def threaded_client(conn, p, gameId, games):
                     break
                 else:
                     if game.ready:
-                        game.gameTime = 60 - (time() - game.startTime)
+                        if game.p1Went == False:
+                            game.p1GameTime = 8 - (time() - game.startTime)
+                        if game.p2Went == False:
+                            game.p2GameTime = 8 - (time() - game.startTime)
+                        
                     if data == "reset":
                         game.resetWent()
                     elif data != "get":

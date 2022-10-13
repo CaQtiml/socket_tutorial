@@ -1,3 +1,7 @@
+import math
+from time import time
+
+
 class Game:
     def __init__(self, id):
         self.p1Went = False # whether player 1 makes a move
@@ -7,8 +11,9 @@ class Game:
         self.moves = [None, None]
         self.wins = [0,0]
         self.ties = 0
-        self.startTime = 0
-        self.gameTime = 0
+        self.startTime = -1
+        self.p1GameTime = -1
+        self.p2GameTime = -1
 
     def get_player_move(self, p):
         """
@@ -29,13 +34,10 @@ class Game:
 
     def bothWent(self):
         return self.p1Went and self.p2Went
-    
-    def setGameTime(self,gameTime):
-        self.gameTime = gameTime
-    
-    def returnTime(self):
-        return self.time
 
+    def eitherZero(self):
+        return math.ceil(self.p1GameTime)==0 or math.ceil(self.p2GameTime)==0
+    
     def winner(self):
 
         p1 = self.moves[0].upper()[0]
@@ -60,3 +62,4 @@ class Game:
     def resetWent(self):
         self.p1Went = False
         self.p2Went = False
+        self.startTime = time()
