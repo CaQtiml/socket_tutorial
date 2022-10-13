@@ -11,6 +11,7 @@ pygame.display.set_caption("Client")
 clientNumber = 0
 
 def redrawWindow(win,player, player2):
+    # fill before redraw. OW, original rect will be still there.
     win.fill((255,255,255))
     player.draw(win)
     player2.draw(win)
