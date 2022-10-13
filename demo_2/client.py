@@ -1,3 +1,4 @@
+import math
 import pygame
 from network import Network
 from button import Button
@@ -18,6 +19,10 @@ def redrawWindow(win, game, p, btns):
         win.blit(text, (width/2 - text.get_width()/2, height/2 - text.get_height()/2))
     else:
         font = pygame.font.SysFont("comicsans", 60)
+
+        text = font.render(str(math.floor(game.gameTime)), 1, (255, 0,0))
+        win.blit(text, (10, 10))
+
         text = font.render("Your Move", 1, (0, 255,255))
         win.blit(text, (80, 200))
 
@@ -65,7 +70,7 @@ def main_game(btns):
     player = int(n.getP())
     print("You are player", player)
 
-    while run:
+    while run: # always run
         clock.tick(60)
         try:
             game = n.send("get")
@@ -104,7 +109,7 @@ def main_game(btns):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 for btn in btns:
-                    if btn.click(pos) and game.connected():
+                    if btn.click(pos) and game.connected(): # check which button is clicked
                         if player == 0:
                             if not game.p1Went:
                                 n.send(btn.text)

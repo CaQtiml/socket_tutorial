@@ -7,6 +7,8 @@ class Game:
         self.moves = [None, None]
         self.wins = [0,0]
         self.ties = 0
+        self.startTime = 0
+        self.gameTime = 0
 
     def get_player_move(self, p):
         """
@@ -27,6 +29,12 @@ class Game:
 
     def bothWent(self):
         return self.p1Went and self.p2Went
+    
+    def setGameTime(self,gameTime):
+        self.gameTime = gameTime
+    
+    def returnTime(self):
+        return self.time
 
     def winner(self):
 

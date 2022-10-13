@@ -1,6 +1,7 @@
 import socket
 from _thread import *
 import pickle
+from time import time
 from game import Game
 
 server = "192.168.1.53"
@@ -16,16 +17,18 @@ def threaded_client(conn, p, gameId, games):
             data = conn.recv(4096).decode()
 
             if gameId in games:
-                game = games[gameId]
+                game = games[gameId] 
+                # Because this can have multiple games in the same time, so we need "gameId" to specify the game.
 
                 if not data:
                     break
                 else:
+                    if game.ready:
+                        game.gameTime = 60 - (time() - game.startTime)
                     if data == "reset":
                         game.resetWent()
                     elif data != "get":
                         game.play(p, data)
-
                     conn.sendall(pickle.dumps(game))
             else:
                 break
@@ -66,6 +69,7 @@ if __name__ == "__main__":
             print("Creating a new game...")
         else:
             games[gameId].ready = True
+            games[gameId].startTime = time()
             p = 1
 
 
