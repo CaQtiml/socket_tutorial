@@ -1,2 +1,3 @@
 /.vscode
 /pgvenv
+__pycache__
