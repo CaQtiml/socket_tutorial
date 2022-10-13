@@ -1,6 +1,6 @@
 class Game:
     def __init__(self, id):
-        self.p1Went = False
+        self.p1Went = False # whether player 1 makes a move
         self.p2Went = False
         self.ready = False
         self.id = id

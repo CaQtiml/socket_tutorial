@@ -8,7 +8,7 @@ class Network:
         self.server = "192.168.1.53"
         self.port = 5555
         self.addr = (self.server, self.port)
-        self.p = self.connect()
+        self.p = self.connect() # player 0 or 1
 
     def getP(self):
         return self.p
